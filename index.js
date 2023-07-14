@@ -32,23 +32,52 @@ async function retrieveBlockNumbers() {
 
   const handleMessage = async (message) => {
     try {
-      const messageData = JSON.parse(message.data.toString());
-      const blockNumber = messageData.blockNumber;
+      //const messageData = JSON.parse(message.data.toString());
+      //const blockNumber = messageData.blockNumber;
+
+
+      const request = {
+        subscription: client.subscriptionPath(process.env.PROJECT_ID, subscriptionName),
+        maxMessages: 1,
+      };
+  
+      const [response] = await client.pull(request);
+      const messages = response.receivedMessages;
+  
+      if (messages && messages.length > 0) {
+        const message = messages[0].message;
+        const messageData = message.data.toString();
+        console.log('line 88 Received message data:', messageData);
+        const blockNumber = JSON.parse(messageData).blockNumber;
+  
+        await processBlockNumbers([blockNumber]); // Wrap the block number in an array
+  
+        const ackRequest = {
+          subscription: request.subscription,
+          ackIds: [messages[0].ackId],
+        };
+  
+        await client.acknowledge(ackRequest);
+      } else {
+        console.log('line 100 No messages received from Pub/Sub subscription');
+      }
+      
 
       const block = await web3.eth.getBlock(blockNumber);
       const transactions = block.transactions;
 
       for (const transaction of transactions) {
-        await publishTransaction(transaction);
+        console.log(transaction);
+        //await publishTransaction(transaction);
       }
 
       message.ack();
     } catch (error) {
       console.error('Error processing message:', error);
-      const messageData = JSON.parse(message.data.toString());
-      const blockNumber = messageData.blockNumber;
+     // const messageData = JSON.parse(message.data.toString());
+     // const blockNumber = messageData.blockNumber;
      // await handleError(blockNumber); // Put the block number back in the Pub/Sub topic for reprocessing
-      message.ack();
+     // message.ack();
     }
   };
 
