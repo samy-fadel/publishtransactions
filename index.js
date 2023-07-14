@@ -44,6 +44,7 @@ async function retrieveBlockNumbers() {
       message.ack();
     } catch (error) {
       console.error('Error processing message:', error);
+      const blockNumber = parseInt(message.data.toString(), 10);
       await handleError(blockNumber); // Put the block number back in the Pub/Sub topic for reprocessing
       message.ack();
     }
