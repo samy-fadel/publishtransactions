@@ -3,7 +3,7 @@ const Web3 = require('web3');
 const { SecretManagerServiceClient } = require('@google-cloud/secret-manager');
 
 const projectId = process.env.PROJECT_ID;
-const subscriptionName = 'latest-blocknumber-subscription';
+const subscriptionName = 'latest-blocknumber-topic-sub';
 const transactionsTopicName = 'transactions-topic';
 
 const pubsub = new PubSub({ projectId });
