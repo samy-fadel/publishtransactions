@@ -5,6 +5,7 @@ const { SecretManagerServiceClient } = require('@google-cloud/secret-manager');
 const projectId = process.env.PROJECT_ID;
 const subscriptionName = 'latest-blocknumber-topic-sub';
 const transactionsTopicName = 'transactions-topic';
+const { v1 } = require('@google-cloud/pubsub');
 
 const client = new v1.SubscriberClient();
 
