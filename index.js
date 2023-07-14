@@ -45,6 +45,7 @@ async function retrieveBlockNumbers() {
   
       const [response] = await client.pull(request);
       const messages = response.receivedMessages;
+      console.log(messages);
   
       if (messages && messages.length > 0) {
         const message = messages[0].message;
@@ -68,7 +69,7 @@ async function retrieveBlockNumbers() {
   
         for (const transaction of transactions) {
           console.log(transaction);
-          // await publishTransaction(transaction);
+          await publishTransaction(transaction);
         }
       }
   
