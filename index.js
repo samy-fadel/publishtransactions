@@ -6,6 +6,9 @@ const projectId = process.env.PROJECT_ID;
 const subscriptionName = 'latest-blocknumber-topic-sub';
 const transactionsTopicName = 'transactions-topic';
 
+const client = new v1.SubscriberClient();
+
+
 const pubsub = new PubSub({ projectId });
 
 // Function to retrieve the API key from Secret Manager
