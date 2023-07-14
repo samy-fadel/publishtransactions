@@ -32,7 +32,8 @@ async function retrieveBlockNumbers() {
 
   const handleMessage = async (message) => {
     try {
-      const blockNumber = parseInt(message.data.toString(), 10);
+      const messageData = JSON.parse(message.data.toString());
+      const blockNumber = messageData.blockNumber;
 
       const block = await web3.eth.getBlock(blockNumber);
       const transactions = block.transactions;
@@ -44,8 +45,9 @@ async function retrieveBlockNumbers() {
       message.ack();
     } catch (error) {
       console.error('Error processing message:', error);
-      const blockNumber = parseInt(message.data.toString(), 10);
-      await handleError(blockNumber); // Put the block number back in the Pub/Sub topic for reprocessing
+      const messageData = JSON.parse(message.data.toString());
+      const blockNumber = messageData.blockNumber;
+     // await handleError(blockNumber); // Put the block number back in the Pub/Sub topic for reprocessing
       message.ack();
     }
   };
