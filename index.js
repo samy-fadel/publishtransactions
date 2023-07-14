@@ -35,11 +35,9 @@ async function retrieveBlockNumbers() {
   const web3 = new Web3(`https://mainnet.infura.io/v3/${apiKey}`);
 
   const handleMessage = async (message) => {
+    let blockNumber; // Declare blockNumber variable
+  
     try {
-      //const messageData = JSON.parse(message.data.toString());
-      //const blockNumber = messageData.blockNumber;
-
-
       const request = {
         subscription: client.subscriptionPath(process.env.PROJECT_ID, subscriptionName),
         maxMessages: 1,
@@ -51,10 +49,8 @@ async function retrieveBlockNumbers() {
       if (messages && messages.length > 0) {
         const message = messages[0].message;
         const messageData = message.data.toString();
-        console.log('line 88 Received message data:', messageData);
-        const blockNumber = JSON.parse(messageData).blockNumber;
-  
-        await processBlockNumbers([blockNumber]); // Wrap the block number in an array
+        console.log('Received message data:', messageData);
+        blockNumber = JSON.parse(messageData).blockNumber; // Assign value to blockNumber
   
         const ackRequest = {
           subscription: request.subscription,
@@ -63,27 +59,30 @@ async function retrieveBlockNumbers() {
   
         await client.acknowledge(ackRequest);
       } else {
-        console.log('line 100 No messages received from Pub/Sub subscription');
+        console.log('No messages received from Pub/Sub subscription');
       }
-      
-
-      const block = await web3.eth.getBlock(blockNumber);
-      const transactions = block.transactions;
-
-      for (const transaction of transactions) {
-        console.log(transaction);
-        //await publishTransaction(transaction);
+  
+      if (blockNumber) {
+        const block = await web3.eth.getBlock(blockNumber);
+        const transactions = block.transactions;
+  
+        for (const transaction of transactions) {
+          console.log(transaction);
+          // await publishTransaction(transaction);
+        }
       }
-
+  
       message.ack();
     } catch (error) {
       console.error('Error processing message:', error);
-     // const messageData = JSON.parse(message.data.toString());
-     // const blockNumber = messageData.blockNumber;
-     // await handleError(blockNumber); // Put the block number back in the Pub/Sub topic for reprocessing
-     // message.ack();
+      if (blockNumber) {
+        await handleError(blockNumber); // Put the block number back in the Pub/Sub topic for reprocessing
+      }
+      message.ack();
     }
   };
+  
+  
 
   const subscription = pubsub.subscription(subscriptionName);
   subscription.on('message', handleMessage);
