@@ -21,8 +21,10 @@ async function getApiKey() {
 }
 
 async function publishTransaction(transaction) {
-  const data = Buffer.from(JSON.stringify(transaction));
-  await pubsub.topic(transactionsTopicName).publish(data);
+  for (const singleTransaction of transaction) {
+    const data = Buffer.from(JSON.stringify(singleTransaction));
+    await pubsub.topic(transactionsTopicName).publish(data);
+  }
 }
 
 async function handleError(blockNumber) {
