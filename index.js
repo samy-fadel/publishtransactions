@@ -47,14 +47,16 @@ async function retrieveBlockNumbers() {
       console.log("line 47 ", messages);
 
 
-      const ackRequest = {
-        subscription: request.subscription,
-        ackIds: [messages[0].ackId],
-      };
+      //const ackRequest = {
+       // subscription: request.subscription,
+      //  ackIds: [messages[0].ackId],
+   //   };
 
-      await client.acknowledge(ackRequest);
-  
-      
+     // await client.acknowledge(ackRequest);
+     console.log("line 56 ", messages.data);
+      console.log("line 57 ", messages[0].blockNumber);
+      console.log("line 58 ", messages[0]);
+
       blockNumber = messages[0].blockNumber;
       
         const block = await web3.eth.getBlock(blockNumber);
