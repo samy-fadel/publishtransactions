@@ -36,8 +36,19 @@ async function retrieveBlockNumbers() {
 
   const handleMessage = async (message) => {
     let blockNumber; // Declare blockNumber variable
+
+    const request = {
+      subscription: client.subscriptionPath(process.env.PROJECT_ID, subscriptionName),
+      maxMessages: 1,
+    };
+
+    const [response] = await client.pull(request);
+    const messages = response.receivedMessages;
+    console.log(messages);
+    console.log("after msges");
+    console.log([response]);
   
-    try {
+   /* try {
       const request = {
         subscription: client.subscriptionPath(process.env.PROJECT_ID, subscriptionName),
         maxMessages: 1,
@@ -73,7 +84,7 @@ async function retrieveBlockNumbers() {
         await handleError(blockNumber); // Put the block number back in the Pub/Sub topic for reprocessing
       }
       message.ack();
-    }
+    } */
   };
   
   
