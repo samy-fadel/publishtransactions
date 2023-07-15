@@ -34,7 +34,7 @@ async function retrieveBlockNumbers() {
   const apiKey = await getApiKey();
   const web3 = new Web3(`https://mainnet.infura.io/v3/${apiKey}`);
 
-  const handleMessage = async (message) => {
+ // const handleMessage = async (message) => {
     let blockNumber; // Declare blockNumber variable
 
     const request = {
@@ -86,7 +86,7 @@ async function retrieveBlockNumbers() {
       }
       message.ack();
     } */
-  };
+ // };
   
   
 
