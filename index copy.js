@@ -34,9 +34,22 @@ async function retrieveBlockNumbers() {
   const apiKey = await getApiKey();
   const web3 = new Web3(`https://mainnet.infura.io/v3/${apiKey}`);
 
-    let blockNumber;
+ // const handleMessage = async (message) => {
+    let blockNumber; // Declare blockNumber variable
+
+    const request = {
+      subscription: client.subscriptionPath(process.env.PROJECT_ID, subscriptionName),
+      maxMessages: 1,
+    };
+
+    console.log(request);
+    const [response] = await client.pull(request);
+    const messages = response.receivedMessages;
+    console.log(messages);
+    console.log("after msges");
+    //console.log([response]);
   
-    try {
+   /* try {
       const request = {
         subscription: client.subscriptionPath(process.env.PROJECT_ID, subscriptionName),
         maxMessages: 1,
@@ -72,9 +85,13 @@ async function retrieveBlockNumbers() {
         await handleError(blockNumber); // Put the block number back in the Pub/Sub topic for reprocessing
       }
       message.ack();
-    } 
+    } */
+ // };
+  
+  
 
-
+ // const subscription = pubsub.subscription(subscriptionName);
+  //subscription.on('message', handleMessage);
 }
 
 retrieveBlockNumbers();
