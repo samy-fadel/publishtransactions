@@ -70,7 +70,8 @@ async function retrieveBlockNumbers() {
     } catch (error) {
       console.error('Error processing message:', error);
       if (blockNumber) {
-        await handleError(blockNumber); // Put the block number back in the Pub/Sub topic for reprocessing
+        console.log("line 73 inside catch ", blockNumber);
+       // await handleError(blockNumber); // Put the block number back in the Pub/Sub topic for reprocessing
       }
       //message.ack();
       console.log("line 76");
