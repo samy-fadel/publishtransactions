@@ -44,7 +44,7 @@ async function retrieveBlockNumbers() {
   
       const [response] = await client.pull(request);
       const messages = response.receivedMessages;
-      console.log(messages);
+      console.log("line 47 ", messages);
 
 
       const ackRequest = {
@@ -54,7 +54,7 @@ async function retrieveBlockNumbers() {
 
       await client.acknowledge(ackRequest);
   
-      blockNumber = messages;
+      blockNumber = messages[0].blockNumber;
       
         const block = await web3.eth.getBlock(blockNumber);
         const transactions = block.transactions;
