@@ -54,6 +54,7 @@ async function retrieveBlockNumbers() {
 
       await client.acknowledge(ackRequest);
   
+      
       blockNumber = messages[0].blockNumber;
       
         const block = await web3.eth.getBlock(blockNumber);
@@ -65,13 +66,14 @@ async function retrieveBlockNumbers() {
         }
       
   
-      message.ack();
+     // message.ack();
     } catch (error) {
       console.error('Error processing message:', error);
       if (blockNumber) {
         await handleError(blockNumber); // Put the block number back in the Pub/Sub topic for reprocessing
       }
-      message.ack();
+      //message.ack();
+      console.log("line 76");
     } 
 
 
