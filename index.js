@@ -75,7 +75,7 @@ async function retrieveBlockNumbers() {
           console.log('line 88 Received message data:', messageData);
            blockNumber = JSON.parse(messageData).blockNumber;
     
-          await processBlockNumbers([blockNumber]); // Wrap the block number in an array
+         // await processBlockNumbers([blockNumber]); // Wrap the block number in an array
     
           const ackRequest = {
             subscription: request.subscription,
