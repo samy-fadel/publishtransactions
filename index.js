@@ -42,11 +42,12 @@ async function retrieveBlockNumbers() {
       maxMessages: 1,
     };
 
+    console.log(request);
     const [response] = await client.pull(request);
     const messages = response.receivedMessages;
     console.log(messages);
     console.log("after msges");
-    console.log([response]);
+    //console.log([response]);
   
    /* try {
       const request = {
@@ -89,8 +90,8 @@ async function retrieveBlockNumbers() {
   
   
 
-  const subscription = pubsub.subscription(subscriptionName);
-  subscription.on('message', handleMessage);
+ // const subscription = pubsub.subscription(subscriptionName);
+  //subscription.on('message', handleMessage);
 }
 
 retrieveBlockNumbers();
