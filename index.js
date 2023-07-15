@@ -46,24 +46,17 @@ async function retrieveBlockNumbers() {
       const [response] = await client.pull(request);
       const messages = response.receivedMessages;
       console.log(messages);
+
+
+      const ackRequest = {
+        subscription: request.subscription,
+        ackIds: [messages[0].ackId],
+      };
+
+      await client.acknowledge(ackRequest);
   
-      if (messages && messages.length > 0) {
-        const message = messages[0].message;
-        const messageData = message.data.toString();
-        console.log('Received message data:', messageData);
-        blockNumber = JSON.parse(messageData).blockNumber; // Assign value to blockNumber
-  
-        const ackRequest = {
-          subscription: request.subscription,
-          ackIds: [messages[0].ackId],
-        };
-  
-        await client.acknowledge(ackRequest);
-      } else {
-        console.log('No messages received from Pub/Sub subscription');
-      }
-  
-      if (blockNumber) {
+      blockNumber = messages;
+      
         const block = await web3.eth.getBlock(blockNumber);
         const transactions = block.transactions;
   
@@ -71,7 +64,7 @@ async function retrieveBlockNumbers() {
           console.log(transaction);
           await publishTransaction(transaction);
         }
-      }
+      
   
       message.ack();
     } catch (error) {
