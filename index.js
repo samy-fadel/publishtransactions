@@ -57,23 +57,20 @@ async function retrieveBlockNumbers() {
           };
     
           await client.acknowledge(ackRequest);
+          const block = await web3.eth.getBlock(blockNumber);
+          publishTransaction(block.transactions);
         } else {
-         console.log('line 100 No messages received from Pub/Sub subscription');
+         console.log('line 63 No messages received from Pub/Sub subscription');
        }
       
   
-     // message.ack();
     } catch (error) {
       console.error('Error processing message:', error);
       if (blockNumber) {
         console.log("line 73 inside catch ", blockNumber);
-       // await handleError(blockNumber); // Put the block number back in the Pub/Sub topic for reprocessing
+       await handleError(blockNumber); // Put the block number back in the Pub/Sub topic for reprocessing
       }
-      //message.ack();
-      console.log("line 76");
     } 
-
-
 }
 
 retrieveBlockNumbers();
