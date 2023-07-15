@@ -44,48 +44,22 @@ async function retrieveBlockNumbers() {
   
       const [response] = await client.pull(request);
       const messages = response.receivedMessages;
-      //console.log("line 47 ", messages);
 
-
-      //const ackRequest = {
-       // subscription: request.subscription,
-      //  ackIds: [messages[0].ackId],
-   //   };
-
-     // await client.acknowledge(ackRequest);
-    // console.log("line 56 ", messages.data);
-     // console.log("line 57 ", messages[0].blockNumber);
-      console.log("line 58 ", messages[0]);
-
-     // blockNumber = messages[0].blockNumber;
-    //   blockNumber = JSON.parse(messageData).blockNumber;
-
-      
-       // const block = await web3.eth.getBlock(blockNumber);
-       // const transactions = block.transactions;
-  
-       // for (const transaction of transactions) {
-       //   console.log(transaction);
-      //    await publishTransaction(transaction);
-      //  }
-
-       // if (messages && messages.length > 0) {
+       if (messages && messages.length > 0) {
           const message = messages[0].message;
           const messageData = message.data.toString();
           console.log('line 88 Received message data:', messageData);
-           blockNumber = JSON.parse(messageData).blockNumber;
-    
-         // await processBlockNumbers([blockNumber]); // Wrap the block number in an array
-    
+          blockNumber = JSON.parse(messageData).blockNumber;
+        
           const ackRequest = {
             subscription: request.subscription,
             ackIds: [messages[0].ackId],
           };
     
           await client.acknowledge(ackRequest);
-       // } //else {
-         // console.log('line 100 No messages received from Pub/Sub subscription');
-      //  }
+        } else {
+         console.log('line 100 No messages received from Pub/Sub subscription');
+       }
       
   
      // message.ack();
