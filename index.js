@@ -20,12 +20,20 @@ async function getApiKey() {
   return version.payload.data.toString();
 }
 
+
+
 async function publishTransaction(transaction) {
+  let totalTransactions = 0;
+
   for (const singleTransaction of transaction) {
     const data = Buffer.from(JSON.stringify(singleTransaction));
     await pubsub.topic(transactionsTopicName).publish(data);
+    totalTransactions++;
   }
+
+  console.log(`Total transactions published: ${totalTransactions}`);
 }
+
 
 async function handleError(blockNumber) {
   const data = Buffer.from(JSON.stringify({ blockNumber }));
