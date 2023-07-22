@@ -68,6 +68,7 @@ async function retrieveBlockNumbers() {
     
           await client.acknowledge(ackRequest);
           const block = await web3.eth.getBlock(blockNumber);
+          console.log(`Total number of transactions in block ${blockNumber}: ${block.transactions.length}`);
           publishTransaction(block.transactions);
         } else {
          console.log('line 63 No messages received from Pub/Sub subscription');
